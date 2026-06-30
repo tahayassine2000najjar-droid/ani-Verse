@@ -28,10 +28,10 @@ export default function NavBar() {
               <li key={link.to}>
                 <Link
                  to={link.to}
-                    className={location.pathname === Link.to? "active" : ""}
+                    className={location.pathname === link.to? "active" : ""}
                      onClick={()=>setOpen(false)}
                      >
-                    {Link.label}
+                    {link.label}
                 </Link>
               </li>  
               ))}
