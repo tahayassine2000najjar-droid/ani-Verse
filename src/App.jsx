@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/utils/Navbar';
+import LandingPage from './pages/LandingPage';
 import "./App.css"
 
 
@@ -9,7 +10,7 @@ export default function App () {
       <BrowserRouter>
       <Navbar />
       <Routes>
-         {/* <Route path='/' element={<LandingPage/>} /> */}
+         <Route path='/' element={<LandingPage/>} />
       </Routes>
       </BrowserRouter>
     </div>
