@@ -646,7 +646,245 @@
   gap: 0.5rem;
 }
 
+.characters-page {
+  padding-top: 6rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.characters-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.characters-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.2rem;
+}
+
+.character-card {
+  background: var(--black-card);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid transparent;
+}
+
+.character-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--yellow);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.1);
+}
+
+.character-card-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+}
+
+.character-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.character-card:hover .character-card-image img {
+  transform: scale(1.05);
+}
+
+.character-card-body {
+  padding: 0.7rem;
+}
+
+.character-card-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.character-card-role {
+  font-size: 0.75rem;
+  color: var(--gray);
+}
+
+.back-link {
+  color: var(--yellow);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: opacity 0.3s;
+}
+
+.back-link:hover {
+  opacity: 0.7;
+}
+
+.character-profile-page {
+  padding-top: 6rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.character-profile-header {
+  margin-bottom: 2rem;
+}
+
+.character-profile-card {
+  display: flex;
+  gap: 2rem;
+  background: var(--black-card);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  align-items: flex-start;
+}
+
+.character-profile-image {
+  width: 250px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.character-profile-image img {
+  width: 100%;
+  display: block;
+}
+
+.character-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.character-profile-name {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.character-profile-jp {
+  font-size: 1rem;
+  color: var(--gray);
+}
+
+.character-profile-nicknames {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.character-profile-section {
+  margin-bottom: 2rem;
+}
+
+.character-profile-section h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--yellow);
+  margin-bottom: 1rem;
+}
+
+.character-profile-about {
+  color: var(--gray-light);
+  line-height: 1.8;
+  font-size: 0.95rem;
+}
+
+.character-anime-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.character-anime-card {
+  background: var(--black-card);
+  border-radius: 10px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: all 0.3s;
+  border: 1px solid transparent;
+}
+
+.character-anime-card:hover {
+  border-color: var(--yellow);
+  transform: translateY(-3px);
+}
+
+.character-anime-card img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+}
+
+.character-anime-role {
+  display: block;
+  padding: 0.3rem 0.6rem 0;
+  font-size: 0.7rem;
+  color: var(--yellow);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.character-anime-title {
+  display: block;
+  padding: 0.2rem 0.6rem 0.6rem;
+  font-size: 0.8rem;
+  color: var(--white);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 @media (max-width: 767px) {
+  .character-profile-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .character-profile-image {
+    width: 180px;
+  }
+
+  .character-profile-name {
+    font-size: 1.5rem;
+  }
+
+  .characters-page {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .character-profile-page {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .characters-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+
   .anime-detail-hero-content {
     flex-direction: column;
     align-items: center;
