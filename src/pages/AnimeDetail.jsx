@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Loading from '../components/utils/Loading'
+import { getFavorites, addFavorite, removeFavorite, getRatings, upsertRating, getLibrary, addToLibrary, removeFromLibrary, updateLibraryItem } from '../api'
 
 const API_BASE = 'https://api.jikan.moe/v4'
 
@@ -10,7 +11,9 @@ export default function AnimeDetail() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [inFavorites, setInFavorites] = useState(false)
+  const [favId, setFavId] = useState(null)
   const [inLibrary, setInLibrary] = useState(false)
+  const [libId, setLibId] = useState(null)
   const [libraryStatus, setLibraryStatus] = useState('')
   const [rating, setRating] = useState(0)
   const [note, setNote] = useState('')
@@ -34,60 +37,97 @@ export default function AnimeDetail() {
   }, [id])
 
   useEffect(() => {
-    const savedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]')
-    setInFavorites(savedFavorites.includes(Number(id)))
+    async function loadUserData() {
+      try {
+        const [favorites, ratings, library] = await Promise.all([
+          getFavorites(),
+          getRatings(),
+          getLibrary()
+        ])
 
-    const savedRatings = JSON.parse(localStorage.getItem('ratings') || '{}')
-    if (savedRatings[id]) setRating(savedRatings[id].score)
-    if (savedRatings[id]) setNote(savedRatings[id].note || '')
+        const fav = favorites.find(f => f.animeId === Number(id))
+        if (fav) {
+          setInFavorites(true)
+          setFavId(fav.id)
+        }
 
-    const savedLibrary = JSON.parse(localStorage.getItem('library') || '{}')
-    if (savedLibrary[id]) {
-      setInLibrary(true)
-      setLibraryStatus(savedLibrary[id].status)
+        const rat = ratings.find(r => r.animeId === Number(id))
+        if (rat) {
+          setRating(rat.score)
+          setNote(rat.note || '')
+        }
+
+        const lib = library.find(l => l.animeId === Number(id))
+        if (lib) {
+          setInLibrary(true)
+          setLibId(lib.id)
+          setLibraryStatus(lib.status)
+        }
+      } catch (err) {
+        console.error(err)
+      }
     }
+    loadUserData()
   }, [id])
 
-  function toggleFavorite() {
-    const saved = JSON.parse(localStorage.getItem('favorites') || '[]')
-    const idNum = Number(id)
-    let updated
-    if (inFavorites) {
-      updated = saved.filter(fid => fid !== idNum)
-    } else {
-      updated = [...saved, idNum]
+  async function toggleFavorite() {
+    try {
+      if (inFavorites) {
+        await removeFavorite(favId)
+        setInFavorites(false)
+        setFavId(null)
+      } else {
+        const data = await addFavorite(anime)
+        setInFavorites(true)
+        setFavId(data.id)
+      }
+    } catch (err) {
+      console.error(err)
     }
-    localStorage.setItem('favorites', JSON.stringify(updated))
-    setInFavorites(!inFavorites)
   }
 
-  function handleRating(value) {
-    const saved = JSON.parse(localStorage.getItem('ratings') || '{}')
-    saved[id] = { score: value, note }
-    localStorage.setItem('ratings', JSON.stringify(saved))
-    setRating(value)
+  async function handleRating(value) {
+    try {
+      await upsertRating(Number(id), value, note)
+      setRating(value)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
-  function handleNoteChange(e) {
+  async function handleNoteChange(e) {
     const value = e.target.value
     setNote(value)
-    const saved = JSON.parse(localStorage.getItem('ratings') || '{}')
-    saved[id] = { score: rating, note: value }
-    localStorage.setItem('ratings', JSON.stringify(saved))
+    try {
+      await upsertRating(Number(id), rating, value)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
-  function handleLibraryStatus(status) {
-    const saved = JSON.parse(localStorage.getItem('library') || '{}')
-    if (inLibrary && saved[id]?.status === status) {
-      delete saved[id]
-      localStorage.setItem('library', JSON.stringify(saved))
-      setInLibrary(false)
-      setLibraryStatus('')
-    } else {
-      saved[id] = { status, title: anime.title, image: anime.images?.jpg?.image_url }
-      localStorage.setItem('library', JSON.stringify(saved))
-      setInLibrary(true)
-      setLibraryStatus(status)
+  async function handleLibraryStatus(status) {
+    try {
+      if (inLibrary && libraryStatus === status) {
+        await removeFromLibrary(libId)
+        setInLibrary(false)
+        setLibId(null)
+        setLibraryStatus('')
+      } else if (inLibrary) {
+        await updateLibraryItem(libId, status)
+        setLibraryStatus(status)
+      } else {
+        const data = await addToLibrary(
+          anime.mal_id,
+          anime.title,
+          anime.images?.jpg?.image_url,
+          status
+        )
+        setInLibrary(true)
+        setLibId(data.id)
+        setLibraryStatus(status)
+      }
+    } catch (err) {
+      console.error(err)
     }
   }
 

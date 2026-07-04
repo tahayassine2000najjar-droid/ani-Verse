@@ -6,6 +6,10 @@ import AnimeDetail from './pages/AnimeDetail';
 import AnimeCharacters from './pages/AnimeCharacters';
 import CharacterList from './pages/CharacterList';
 import CharacterProfile from './pages/CharacterProfile';
+import Favorites from './pages/Favorites';
+import MyRatings from './pages/MyRatings';
+import MyLibrary from './pages/MyLibrary';
+import Dashboard from './pages/Dashboard';
 import "./App.css"
 
 
@@ -21,6 +25,10 @@ export default function App () {
          <Route path='/anime/:id/characters' element={<AnimeCharacters/>} />
          <Route path='/characters' element={<CharacterList/>} />
          <Route path='/characters/:id' element={<CharacterProfile/>} />
+         <Route path='/favorites' element={<Favorites/>} />
+         <Route path='/my-ratings' element={<MyRatings/>} />
+         <Route path='/my-library' element={<MyLibrary/>} />
+         <Route path='/dashboard' element={<Dashboard/>} />
       </Routes>
       </BrowserRouter>
     </div>

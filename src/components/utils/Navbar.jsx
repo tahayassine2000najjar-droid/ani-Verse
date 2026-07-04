@@ -7,6 +7,7 @@ const links = [
     {to: '/anime', label:'Anime'},
     {to: '/characters', label:'Characters'},
     {to: '/favorites', label:'Favorites'},
+    {to: '/my-ratings', label:'My Ratings'},
     {to: '/my-library', label:'My Library'},
     {to: '/dashboard', label:'Dashboard'},
 ]
